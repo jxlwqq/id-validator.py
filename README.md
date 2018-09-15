@@ -38,7 +38,7 @@ validator.is_valid('830000199201300022') # 台湾居民居住证 18 位
 from id_validator import validator
 
 validator.get_info('440308199901101512') # 18 位
-validator.get_info('610104620927690') # 18 位
+validator.get_info('610104620927690')    # 15 位
 ```
 
 返回信息格式如下：
@@ -64,8 +64,8 @@ validator.get_info('610104620927690') # 18 位
 ```python
 from id_validator import validator
 
-validator.fake_id();                                     # 18 位
-validator.fake_id(False);                                # 15 位
+validator.fake_id()                                      # 18 位
+validator.fake_id(False)                                 # 15 位
 validator.fake_id(True, '上海市', '2000', 1)              # 生成出生于 2000 年上海市的男性居民身份证
 validator.fake_id(True, '南山区', '1999', 0)              # 生成出生于 1999 年广东省深圳市南山区的女性居民身份证
 validator.fake_id(True, '江苏省', '200001', 1)            # 生成出生于 2000 年 1 月江苏省的男性居民身份证
