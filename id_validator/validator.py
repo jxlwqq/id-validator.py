@@ -60,7 +60,7 @@ def fake_id(eighteen=True, address=None, birthday=None, sex=None):
     birthday_code = __generator_birthday_code(birthday)
     order_code = __generator_order_code(sex)
     if not eighteen:
-        return address_code + birthday_code + order_code
+        return address_code + birthday_code[2:] + order_code
     body = address_code + birthday_code + order_code
     check_bit = __generator_check_bit(body)
     return body + check_bit
