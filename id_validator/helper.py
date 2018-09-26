@@ -2,13 +2,18 @@
 # encoding: utf-8
 
 import re
-from . import utils
-from . import data
 import random
 import datetime
+from . import utils
+from . import data
 
 
 def generator_birthday_code(birthday=None):
+    """
+    生成出生日期码
+    :param birthday:
+    :return:
+    """
     year = ''
     month = ''
     day = ''
@@ -36,6 +41,11 @@ def generator_birthday_code(birthday=None):
 
 
 def generator_order_code(sex=None):
+    """
+    生成顺序码
+    :param sex:
+    :return:
+    """
     order_code = random.randint(101, 1000)
     if sex == 1:
         order_code = order_code - 1 if order_code % 2 == 0 else order_code
@@ -45,11 +55,17 @@ def generator_order_code(sex=None):
 
 
 def generator_address_code(address=None):
+    """
+    生成地址码
+    :param address:
+    :return:
+    """
     address_code = ''
     if address is not None:
         for key, val in data.get_address_code().items():
             if val == address:
                 address_code = key
+                break
 
     if address_code != '' and address_code[0:1] == '8':
         return address_code
@@ -88,6 +104,11 @@ def generator_address_code(address=None):
 
 
 def generator_check_bit(body):
+    """
+    生成校验码
+    :param body:
+    :return:
+    """
     pos_weight = {}
     weight_list = range(2, 19)[::-1]
     for i in weight_list:
@@ -110,6 +131,11 @@ def generator_check_bit(body):
 
 
 def check_address_code(address_code):
+    """
+    检测地址码
+    :param address_code:
+    :return:
+    """
     address_info = get_address_info(address_code)
     if address_info['province'] == '':
         return False
@@ -117,6 +143,11 @@ def check_address_code(address_code):
 
 
 def check_birthday_code(birthday_code):
+    """
+    检测出生日期码
+    :param birthday_code:
+    :return:
+    """
     year = int(birthday_code[0:4])
     month = int(birthday_code[4:6])
     day = int(birthday_code[6:8])
@@ -130,12 +161,22 @@ def check_birthday_code(birthday_code):
 
 
 def check_order_code(order_code):
+    """
+    检测顺序码
+    :param order_code:
+    :return:
+    """
     if len(order_code) != 3:
         return False
     return True
 
 
 def get_id_argument(id_card):
+    """
+    获取身份证号码信息
+    :param id_card:
+    :return:
+    """
     id_card = id_card.upper()
     id_length = len(id_card)
     if id_length == 18:
@@ -160,6 +201,11 @@ def get_id_argument(id_card):
 
 
 def get_address_info(address_code):
+    """
+    获取地址信息
+    :param address_code:
+    :return:
+    """
     address_info = {}
     first_character = address_code[0:1]  # 用于判断是否是港澳台居民居住证（8字开头）
 
@@ -188,10 +234,15 @@ def get_address_info(address_code):
 
 
 def get_constellation(birthday_code):
+    """
+    获取星座信息
+    :param birthday_code:
+    :return:
+    """
     year = birthday_code[0:4]
     month = birthday_code[4:6]
     day = birthday_code[6:8]
-    time = utils.str_to_time(birthday_code)
+    time = utils.str_to_time(birthday_code, '%Y%m%d')
 
     if (month == '01' and int(day) < 20) or (month == '12' and int(day) > 21):
         return data.get_constellation()['12']['name']
@@ -200,24 +251,28 @@ def get_constellation(birthday_code):
     elif month == '12':
         return data.get_constellation()['12']['name']
 
-    start_date = year + '-' + data.get_constellation()[month]['start_date']
-
-    end_date = year + '-' + data.get_constellation()[month]['end_date']
-
-    if (utils.str_to_time(start_date, '%Y-%m-%d') <= time) and (utils.str_to_time(end_date, '%Y-%m-%d') >= time):
+    start_date = utils.str_to_time(year + '-' + data.get_constellation()[month]['start_date'])
+    end_date = utils.str_to_time(year + '-' + data.get_constellation()[month]['end_date'])
+    if (start_date <= time) and (end_date >= time):
         return data.get_constellation()[month]['name']
 
     key = int(month) - 1
     key = utils.get_str_pad(key) if key < 10 else str(key)
-    start_date = year + '-' + data.get_constellation()[key]['start_date']
-    end_date = year + '-' + data.get_constellation()[key]['end_date']
-    if (utils.str_to_time(start_date, '%Y-%m-%d') <= time) and (utils.str_to_time(end_date, '%Y-%m-%d') >= time):
+    start_date = utils.str_to_time(year + '-' + data.get_constellation()[key]['start_date'])
+    end_date = utils.str_to_time(year + '-' + data.get_constellation()[key]['end_date'])
+    if (start_date <= time) and (end_date >= time):
         return data.get_constellation()[key]['name']
+
     return ''
 
 
 def get_chinese_zodiac(birthday_code):
-    start = 1900
+    """
+    获取生肖
+    :param birthday_code:
+    :return:
+    """
+    start = 1900  # 子鼠
     end = int(birthday_code[0:4])
     key = (end - start) % 12
     key = key if key >= 0 else key + 12

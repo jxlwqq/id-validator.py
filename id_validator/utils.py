@@ -63,7 +63,7 @@ def is_set(variable):
     return variable in locals() or variable in globals()
 
 
-def str_to_time(string, format_string="%Y%m%d"):
+def str_to_time(string, format_string="%Y-%m-%d"):
     import time
     str_time = time.strptime(string, format_string)
     return int(time.mktime(str_time))
