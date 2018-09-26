@@ -115,7 +115,7 @@ def __generator_address_code(address=None):
     if address_code != '':
         if address_code[2:6] == '0000':
             province_code = address_code[0:2]
-            pattern = '^' + province_code + '\d{2}[^0]{2}$'
+            pattern = r'^%s\d{2}[^0]{2}$' % province_code
             pattern = re.compile(pattern)
             result = []
             for key, val in data.get_address_code().items():
@@ -125,7 +125,7 @@ def __generator_address_code(address=None):
 
         if address_code[4:6] == '00':
             city_code = address_code[0:4]
-            pattern = '^' + city_code + '[^0]{2}$'
+            pattern = r'^%s[^0]{2}$' % city_code
             pattern = re.compile(pattern)
             result = []
             for key, val in data.get_address_code().items():
@@ -134,7 +134,7 @@ def __generator_address_code(address=None):
             address_code = result[random.choice(range(len(result)))]
 
     else:
-        pattern = '^\d{4}[^0]{2}$'
+        pattern = r'^\d{4}[^0]{2}$'
         pattern = re.compile(pattern)
         result = []
         for key, val in data.get_address_code().items():
