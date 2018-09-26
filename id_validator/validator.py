@@ -70,7 +70,7 @@ def __generator_birthday_code(birthday=None):
     year = ''
     month = ''
     day = ''
-    if not (birthday is None):
+    if birthday is not None:
         year = utils.get_str_pad(birthday[0:4], 4)
         month = utils.get_str_pad(birthday[4:6], 2)
         day = utils.get_str_pad(birthday[6:8], 2)
@@ -104,7 +104,7 @@ def __generator_order_code(sex=None):
 
 def __generator_address_code(address=None):
     address_code = ''
-    if not (address is None):
+    if address is not None:
         for key, val in data.get_address_code().items():
             if val == address:
                 address_code = key
