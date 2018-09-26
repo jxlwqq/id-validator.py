@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 import functools
+import datetime
 
 
 def check_for_none(func):
@@ -67,3 +68,16 @@ def str_to_time(string, format_string="%Y-%m-%d"):
     import time
     str_time = time.strptime(string, format_string)
     return int(time.mktime(str_time))
+
+
+
+def check_year(year):
+    return False if year == '' or year < '1800' or year > str(datetime.datetime.now().year) else True
+
+
+def check_month(month):
+    return False if month == '' or month == '00' or month > '12' else True
+
+
+def check_day(day):
+    return False if day == '' or day == '00' or day > '31' else True

@@ -3,7 +3,6 @@
 
 import re
 import random
-import datetime
 from . import utils
 from . import data
 
@@ -17,18 +16,19 @@ def generator_birthday_code(birthday=None):
     year = ''
     month = ''
     day = ''
+
     if birthday is not None:
         year = utils.get_str_pad(birthday[0:4], 4)
         month = utils.get_str_pad(birthday[4:6], 2)
         day = utils.get_str_pad(birthday[6:8], 2)
 
-    if year == '' or year < '1800' or year > str(datetime.datetime.now().year):
+    if not utils.check_year(year):
         year = '19' + str(random.randint(50, 100))
 
-    if month == '' or month == '00' or month > '12':
+    if not utils.check_year(month):
         month = utils.get_str_pad(random.randint(1, 12))
 
-    if day == '' or day == '00' or day > '31':
+    if not utils.check_day(day):
         day = utils.get_str_pad(random.randint(1, 28))
 
     if not utils.check_date(month, day, year):
@@ -36,8 +36,7 @@ def generator_birthday_code(birthday=None):
         month = utils.get_str_pad(random.randint(1, 12))
         day = utils.get_str_pad(random.randint(1, 28))
 
-    birthday_code = year + month + day
-    return birthday_code
+    return year + month + day
 
 
 def generator_order_code(sex=None):
@@ -74,33 +73,32 @@ def generator_address_code(address=None):
         if address_code[2:6] == '0000':
             province_code = address_code[0:2]
             pattern = r'^%s\d{2}[^0]{2}$' % province_code
-            pattern = re.compile(pattern)
-            result = []
-            for key, val in data.get_address_code().items():
-                if re.match(pattern, key):
-                    result.append(key)
-            address_code = result[random.choice(range(len(result)))]
+            address_code = get_random_address_code(pattern)
 
         if address_code[4:6] == '00':
             city_code = address_code[0:4]
             pattern = r'^%s[^0]{2}$' % city_code
-            pattern = re.compile(pattern)
-            result = []
-            for key, val in data.get_address_code().items():
-                if re.match(pattern, key):
-                    result.append(key)
-            address_code = result[random.choice(range(len(result)))]
+            address_code = get_random_address_code(pattern)
 
     else:
         pattern = r'^\d{4}[^0]{2}$'
-        pattern = re.compile(pattern)
-        result = []
-        for key, val in data.get_address_code().items():
-            if re.match(pattern, key):
-                result.append(key)
-        address_code = result[random.choice(range(len(result)))]
+        address_code = get_random_address_code(pattern)
 
     return address_code
+
+
+def get_random_address_code(pattern):
+    """
+    获取随机地址码
+    :param pattern:
+    :return:
+    """
+    pattern = re.compile(pattern)
+    result = []
+    for key, val in data.get_address_code().items():
+        if re.match(pattern, key):
+            result.append(key)
+    return result[random.choice(range(len(result)))]
 
 
 def generator_check_bit(body):
@@ -112,7 +110,7 @@ def generator_check_bit(body):
     pos_weight = {}
     weight_list = range(2, 19)[::-1]
     for i in weight_list:
-        weight = pow(2, i - 1) % 11;
+        weight = pow(2, i - 1) % 11
         pos_weight[i] = weight
 
     body_sum = 0
