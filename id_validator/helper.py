@@ -3,54 +3,8 @@
 
 import re
 import random
-from . import utils
+import datetime
 from . import data
-
-
-def generator_birthday_code(birthday=None):
-    """
-    生成出生日期码
-    :param birthday:
-    :return:
-    """
-    year = ''
-    month = ''
-    day = ''
-
-    if birthday is not None:
-        year = utils.get_str_pad(birthday[0:4], 4)
-        month = utils.get_str_pad(birthday[4:6], 2)
-        day = utils.get_str_pad(birthday[6:8], 2)
-
-    if not utils.check_year(year):
-        year = '19' + str(random.randint(50, 100))
-
-    if not utils.check_year(month):
-        month = utils.get_str_pad(random.randint(1, 12))
-
-    if not utils.check_day(day):
-        day = utils.get_str_pad(random.randint(1, 28))
-
-    if not utils.check_date(month, day, year):
-        year = '19' + str(random.randint(50, 100))
-        month = utils.get_str_pad(random.randint(1, 12))
-        day = utils.get_str_pad(random.randint(1, 28))
-
-    return year + month + day
-
-
-def generator_order_code(sex=None):
-    """
-    生成顺序码
-    :param sex:
-    :return:
-    """
-    order_code = random.randint(101, 1000)
-    if sex == 1:
-        order_code = order_code - 1 if order_code % 2 == 0 else order_code
-    if sex == 0:
-        order_code = order_code if order_code % 2 == 0 else order_code - 1
-    return str(order_code)
 
 
 def generator_address_code(address=None):
@@ -73,32 +27,64 @@ def generator_address_code(address=None):
         if address_code[2:6] == '0000':
             province_code = address_code[0:2]
             pattern = r'^%s\d{2}[^0]{2}$' % province_code
-            address_code = get_random_address_code(pattern)
+            address_code = __get_random_address_code(pattern)
 
         if address_code[4:6] == '00':
             city_code = address_code[0:4]
             pattern = r'^%s[^0]{2}$' % city_code
-            address_code = get_random_address_code(pattern)
+            address_code = __get_random_address_code(pattern)
 
     else:
         pattern = r'^\d{4}[^0]{2}$'
-        address_code = get_random_address_code(pattern)
+        address_code = __get_random_address_code(pattern)
 
     return address_code
 
 
-def get_random_address_code(pattern):
+def generator_birthday_code(birthday=None):
     """
-    获取随机地址码
-    :param pattern:
+    生成出生日期码
+    :param birthday:
     :return:
     """
-    pattern = re.compile(pattern)
-    result = []
-    for key, val in data.get_address_code().items():
-        if re.match(pattern, key):
-            result.append(key)
-    return result[random.choice(range(len(result)))]
+    year = ''
+    month = ''
+    day = ''
+
+    if birthday is not None:
+        year = __get_str_pad(birthday[0:4], 4)
+        month = __get_str_pad(birthday[4:6], 2)
+        day = __get_str_pad(birthday[6:8], 2)
+
+    if not __check_year(year):
+        year = '19' + str(random.randint(50, 100))
+
+    if not __check_year(month):
+        month = __get_str_pad(random.randint(1, 12))
+
+    if not __check_day(day):
+        day = __get_str_pad(random.randint(1, 28))
+
+    if not check_birthday_code(year + month + day):
+        year = '19' + str(random.randint(50, 100))
+        month = __get_str_pad(random.randint(1, 12))
+        day = __get_str_pad(random.randint(1, 28))
+
+    return year + month + day
+
+
+def generator_order_code(sex=None):
+    """
+    生成顺序码
+    :param sex:
+    :return:
+    """
+    order_code = random.randint(101, 1000)
+    if sex == 1:
+        order_code = order_code - 1 if order_code % 2 == 0 else order_code
+    if sex == 0:
+        order_code = order_code if order_code % 2 == 0 else order_code - 1
+    return str(order_code)
 
 
 def generator_check_bit(body):
@@ -142,20 +128,33 @@ def check_address_code(address_code):
 
 def check_birthday_code(birthday_code):
     """
-    检测出生日期码
+    检测日期
     :param birthday_code:
     :return:
     """
-    year = int(birthday_code[0:4])
-    month = int(birthday_code[4:6])
-    day = int(birthday_code[6:8])
 
-    if year < 1800:
+    if birthday_code is None or birthday_code == '' or len(birthday_code) != 8:
         return False
 
-    if not utils.check_date(month, day, year):
+    year = __get_str_pad(birthday_code[0:4], 4)
+    month = __get_str_pad(birthday_code[4:6], 2)
+    day = __get_str_pad(birthday_code[6:8], 2)
+
+    if not __check_year(year):
         return False
-    return True
+
+    if not __check_month(month):
+        return False
+
+    if not __check_day(day):
+        return False
+
+    try:
+        month, day, year = map(int, (month, day, year))
+        datetime.date(year, month, day)
+        return True
+    except ValueError:
+        return False
 
 
 def check_order_code(order_code):
@@ -231,7 +230,22 @@ def get_address_info(address_code):
     return address_info
 
 
-def get_constellation(birthday_code):
+def get_id_info(address_info, code):
+    info = dict()
+    info['address_code'] = code['address_code']
+    info['abandoned'] = 1 if data.get_abandoned_address_code().get(code['address_code'], 0) else 0
+    info['address'] = address_info['province'] + address_info['city'] + address_info['district']
+    info['birthday_code'] = code['birthday_code'][0:4] + '-' + code['birthday_code'][4:6] + '-' + code['birthday_code'][
+                                                                                                  6:8]
+    info['constellation'] = __get_constellation(code['birthday_code'])
+    info['chinese_zodiac'] = __get_chinese_zodiac(code['birthday_code'])
+    info['sex'] = 0 if int(code['order_code']) % 2 == 0 else 1
+    info['length'] = code['type']
+    info['check_bit'] = code['check_bit']
+    return info
+
+
+def __get_constellation(birthday_code):
     """
     获取星座信息
     :param birthday_code:
@@ -240,7 +254,7 @@ def get_constellation(birthday_code):
     year = birthday_code[0:4]
     month = birthday_code[4:6]
     day = birthday_code[6:8]
-    time = utils.str_to_time(birthday_code, '%Y%m%d')
+    time = __str_to_time(birthday_code, '%Y%m%d')
 
     if (month == '01' and int(day) < 20) or (month == '12' and int(day) > 21):
         return data.get_constellation()['12']['name']
@@ -249,22 +263,22 @@ def get_constellation(birthday_code):
     elif month == '12':
         return data.get_constellation()['12']['name']
 
-    start_date = utils.str_to_time(year + '-' + data.get_constellation()[month]['start_date'])
-    end_date = utils.str_to_time(year + '-' + data.get_constellation()[month]['end_date'])
+    start_date = __str_to_time(year + '-' + data.get_constellation()[month]['start_date'])
+    end_date = __str_to_time(year + '-' + data.get_constellation()[month]['end_date'])
     if (start_date <= time) and (end_date >= time):
         return data.get_constellation()[month]['name']
 
     key = int(month) - 1
-    key = utils.get_str_pad(key) if key < 10 else str(key)
-    start_date = utils.str_to_time(year + '-' + data.get_constellation()[key]['start_date'])
-    end_date = utils.str_to_time(year + '-' + data.get_constellation()[key]['end_date'])
+    key = __get_str_pad(key) if key < 10 else str(key)
+    start_date = __str_to_time(year + '-' + data.get_constellation()[key]['start_date'])
+    end_date = __str_to_time(year + '-' + data.get_constellation()[key]['end_date'])
     if (start_date <= time) and (end_date >= time):
         return data.get_constellation()[key]['name']
 
     return ''
 
 
-def get_chinese_zodiac(birthday_code):
+def __get_chinese_zodiac(birthday_code):
     """
     获取生肖
     :param birthday_code:
@@ -275,3 +289,83 @@ def get_chinese_zodiac(birthday_code):
     key = (end - start) % 12
     key = key if key >= 0 else key + 12
     return data.get_chinese_zodiac()[key]
+
+
+def __get_random_address_code(pattern):
+    """
+    获取随机地址码
+    :param pattern:
+    :return:
+    """
+    pattern = re.compile(pattern)
+    result = []
+    for key, val in data.get_address_code().items():
+        if re.match(pattern, key):
+            result.append(key)
+    return result[random.choice(range(len(result)))]
+
+
+def __get_str_pad(string, length=2, character='0', right=False):
+    """
+    字符串填充
+    :param string:
+    :param length:
+    :param character:
+    :param right:
+    :return:
+    """
+    string = str(string)
+    character = str(character)
+    if len(string) >= length:
+        return string
+    else:
+        x = length - len(string)
+        for i in range(0, x):
+            if right:
+                string = string + character
+            else:
+                string = character + string
+        return string
+
+
+def __is_set(variable):
+    return variable in locals() or variable in globals()
+
+
+def __str_to_time(string, format_string="%Y-%m-%d"):
+    """
+    将字符串格式转换为日期格式
+    :param string:
+    :param format_string:
+    :return:
+    """
+    import time
+    str_time = time.strptime(string, format_string)
+    return int(time.mktime(str_time))
+
+
+def __check_year(year):
+    """
+    检测年份
+    :param year:
+    :return:
+    """
+    return False if year == '' or year < '1800' or year > str(datetime.datetime.now().year) else True
+
+
+def __check_month(month):
+    """
+    检测月份
+    :param month:
+    :return:
+    """
+    return False if month == '' or month == '00' or month > '12' else True
+
+
+def __check_day(day):
+    """
+    检测日期
+    :param day:
+    :return:
+    """
+    return False if day == '' or day == '00' or day > '31' else True
