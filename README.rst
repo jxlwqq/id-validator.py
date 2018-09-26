@@ -1,12 +1,11 @@
 **中华人民共和国居民身份证**\ 、\ **中华人民共和国港澳居民居住证**\ 以及\ **中华人民共和国台湾居民居住证**\ 号码验证工具（Python
 版）支持 15 位与 18 位号码。
 
+-  `PHP 版本 <https://github.com/jxlwqq/id-validator>`__
+
 .. image:: https://travis-ci.org/jxlwqq/id-validator.py.svg?branch=master
     :target: https://travis-ci.org/jxlwqq/id-validator.py
 
-   暂仅支持 Python 3。
-
--  `PHP 版本 <https://github.com/jxlwqq/id-validator>`__
 
 安装
 ----
