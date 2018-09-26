@@ -44,7 +44,7 @@ def get_info(id_card):
     info = dict()
     info['address_code'] = code['address_code']
     info['abandoned'] = 1 if data.get_abandoned_address_code().get(code['address_code'], 0) else 0
-    info['address'] = ''.join(address_info.values())
+    info['address'] = address_info['province'] + address_info['city'] + address_info['district']
     info['birthday_code'] = code['birthday_code'][0:4] + '-' + code['birthday_code'][4:6] + '-' + code['birthday_code'][
                                                                                                   6:8]
     info['constellation'] = __get_constellation(code['birthday_code'])
@@ -221,15 +221,15 @@ def __get_address_info(address_code):
     address_info = {}
     first_character = address_code[0:1]  # 用于判断是否是港澳台居民居住证（8字开头）
 
-    provice_address_code = address_code[0:2] + '0000'
+    province_address_code = address_code[0:2] + '0000'
     city_address_code = address_code[0:4] + '00'
 
     address_code_dist = data.get_address_code()
     abandoned_address_code_dist = data.get_abandoned_address_code()
-    address_info['province'] = address_code_dist.get(provice_address_code, '')
+    address_info['province'] = address_code_dist.get(province_address_code, '')
 
     if address_info['province'] == '':
-        address_info['province'] = abandoned_address_code_dist.get(provice_address_code, '')
+        address_info['province'] = abandoned_address_code_dist.get(province_address_code, '')
 
     if first_character != '8':
         address_info['city'] = address_code_dist.get(city_address_code, '')
