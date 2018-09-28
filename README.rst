@@ -1,5 +1,5 @@
 **中华人民共和国居民身份证**\ 、\ **中华人民共和国港澳居民居住证**\ 以及\ **中华人民共和国台湾居民居住证**\ 号码验证工具（Python
-版）支持 15 位与 18 位号码。暂仅支持 Python 3。
+版）支持 15 位与 18 位号码。仅支持 Python 3。
 
 -  `PHP 版本 <https://github.com/jxlwqq/id-validator>`__
 
@@ -54,15 +54,15 @@
 .. code:: python
 
    {
-   'address_code'   : '440308',          # 地址码   
-   'abandoned'     : 0,                  # 地址码是否废弃，1 为废弃的，0 为正在使用的
-   'address'       : '广东省深圳市盐田区',  # 地址
-   'birthday_code'  : '1999-01-10',      # 出生日期
-   'constellation' : '水瓶座',            # 星座
-   'chinese_zodiac' : '卯兔',             # 生肖
-   'sex'           : 1,                  # 性别，1 为男性，0 为女性
-   'length'        : 18,                 # 号码长度
-   'check_bit'      : '2'                # 校验码
+   'address_code'   : '440308',           # 地址码   
+   'abandoned'      : 0,                  # 地址码是否废弃，1 为废弃的，0 为正在使用的
+   'address'        : '广东省深圳市盐田区',  # 地址
+   'birthday_code'  : '1999-01-10',       # 出生日期
+   'constellation'  : '水瓶座',            # 星座
+   'chinese_zodiac' : '卯兔',              # 生肖
+   'sex'            : 1,                  # 性别，1 为男性，0 为女性
+   'length'         : 18,                 # 号码长度
+   'check_bit'      : '2'                 # 校验码
    }
 
 ..
@@ -86,7 +86,7 @@
    validator.fake_id(True, '江苏省', '200001', 1)            # 生成出生于 2000 年 1 月江苏省的男性居民身份证
    validator.fake_id(True, '厦门市', '199701', 0)            # 生成出生于 2000 年 1 月福建省厦门市的女性居民身份证
    validator.fake_id(True, '台湾省', '20131010', 0)          # 生成出生于 2013 年 10 月 10 日台湾省的女性居民居住证
-   validator.fake_id(True, '香港特别行政区', '19970701', 0)    # 生成出生于 1997 年 7 月 1 日香港特别行政区的女性居民居住证
+   validator.fake_id(True, '香港特别行政区', '19970701', 0)   # 生成出生于 1997 年 7 月 1 日香港特别行政区的女性居民居住证
 
 参考资料
 --------
@@ -101,11 +101,6 @@
 
 -  `港澳台居民居住证 <https://zh.wikipedia.org/wiki/港澳台居民居住证>`__
 
-Todo List
----------
-
--  增加对 Python2 的支持
--  增加单元测试和 CI
 
 Change Log
 ----------
