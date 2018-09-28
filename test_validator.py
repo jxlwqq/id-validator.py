@@ -20,7 +20,7 @@ class ValidatorTest(unittest.TestCase):
             'abandoned': 0,
             'address': '广东省深圳市盐田区',
             'birthday_code': '1999-01-10',
-            'constellation': '水瓶座',
+            'constellation': '摩羯座',
             'chinese_zodiac': '卯兔',
             'sex': 1,
             'length': 18,

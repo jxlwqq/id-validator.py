@@ -6733,7 +6733,7 @@ def get_constellation():
             'start_date': '11-23',
             'end_date': '12-21',
         }, '12': {
-            'name': '水瓶座',
+            'name': '摩羯座',
             'start_date': '12-22',
             'end_date': '01-19',
         }
