@@ -87,3 +87,18 @@ def fake_id(eighteen=True, address=None, birthday=None, sex=None):
     check_bit = helper.generator_check_bit(body)
 
     return body + check_bit
+
+
+@utils.check_for_none
+@utils.check_empty_string
+@utils.check_id_card_length
+def upgrade_id(id_card):
+    """
+    身份证号码升级（15 位升级为 18 位）
+    :param id_card:
+    :return:
+    """
+    if not is_valid(id_card):
+        return False
+    code = helper.get_id_argument(id_card)
+    return code['address_code'] + code['birthday_code'] + code['order_code'] + helper.generator_check_bit(code['body'])

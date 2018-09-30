@@ -34,6 +34,9 @@ class ValidatorTest(unittest.TestCase):
         self.assertEquals(validator.is_valid(validator.fake_id(True, '江苏省', '20000101', 1)), True)
         self.assertEquals(validator.is_valid(validator.fake_id(True, '台湾省', '20131010', 0)), True)
 
+    def test_upgrade_id(self):
+        self.assertEquals(validator.upgrade_id('610104620927690'), '610104196209276903')
+
 
 if __name__ == '__main__':
     unittest.main()

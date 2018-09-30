@@ -88,6 +88,19 @@
    validator.fake_id(True, '台湾省', '20131010', 0)          # 生成出生于 2013 年 10 月 10 日台湾省的女性居民居住证
    validator.fake_id(True, '香港特别行政区', '19970701', 0)   # 生成出生于 1997 年 7 月 1 日香港特别行政区的女性居民居住证
 
+
+身份证升级
+~~~~~~~~~~~~~~~~~~~~~~
+
+15 位号码升级为 18 位：
+
+.. code:: python
+
+   from id_validator import validator
+
+   validator.upgrade_id('610104620927690')
+
+
 参考资料
 --------
 
