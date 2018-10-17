@@ -58,7 +58,7 @@
    'abandoned'      : 0,                  # 地址码是否废弃，1 为废弃的，0 为正在使用的
    'address'        : '广东省深圳市盐田区',  # 地址
    'birthday_code'  : '1999-01-10',       # 出生日期
-   'constellation'  : '水瓶座',            # 星座
+   'constellation'  : '摩羯座',            # 星座
    'chinese_zodiac' : '卯兔',              # 生肖
    'sex'            : 1,                  # 性别，1 为男性，0 为女性
    'length'         : 18,                 # 号码长度
