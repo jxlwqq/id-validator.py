@@ -27,16 +27,16 @@ def generator_address_code(address=None):
     if address_code != '':
         if address_code[2:6] == '0000':
             province_code = address_code[0:2]
-            pattern = r'^%s\d{2}[^0]{2}$' % province_code
+            pattern = r'^%s\d{2}(?!00)[0-9]{2}$' % province_code
             address_code = get_random_address_code(pattern)
 
         if address_code[4:6] == '00':
             city_code = address_code[0:4]
-            pattern = r'^%s[^0]{2}$' % city_code
+            pattern = r'^%s(?!00)[0-9]{2}$' % city_code
             address_code = get_random_address_code(pattern)
 
     else:
-        pattern = r'^\d{4}[^0]{2}$'
+        pattern = r'^\d{4}(?!00)[0-9]{2}$'
         address_code = get_random_address_code(pattern)
 
     return address_code
