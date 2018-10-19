@@ -273,7 +273,6 @@ def get_chinese_zodiac(birthday_code):
     start = 1900  # 子鼠
     end = int(birthday_code[0:4])
     key = (end - start) % 12
-    key = key if key >= 0 else key + 12
     return data.get_chinese_zodiac()[key]
 
 
