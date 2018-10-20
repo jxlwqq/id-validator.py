@@ -2,6 +2,8 @@
 版）支持 15 位与 18 位号码。仅支持 Python 3。
 
 -  `PHP 版本 <https://github.com/jxlwqq/id-validator>`__
+-  `Ruby 版本 <https://github.com/renyijiu/id_validator>`__
+
 
 .. image:: https://travis-ci.org/jxlwqq/id-validator.py.svg?branch=master
     :target: https://travis-ci.org/jxlwqq/id-validator.py
