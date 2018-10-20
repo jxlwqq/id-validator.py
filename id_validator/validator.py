@@ -100,4 +100,5 @@ def upgrade_id(id_card):
     if not is_valid(id_card):
         return False
     code = helper.get_id_argument(id_card)
-    return code['address_code'] + code['birthday_code'] + code['order_code'] + helper.generator_check_bit(code['body'])
+    body = code['address_code'] + code['birthday_code'] + code['order_code']
+    return body + helper.generator_check_bit(body)
