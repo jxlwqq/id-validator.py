@@ -246,32 +246,18 @@ def get_constellation(birthday_code):
     :param birthday_code:
     :return:
     """
-    year = birthday_code[0:4]
-    month = birthday_code[4:6]
-    day = birthday_code[6:8]
-    time = func.str_to_time(birthday_code, '%Y%m%d')
+    month = int(birthday_code[4:6])
+    day = int(birthday_code[6:8])
 
-    if (month == '01' and int(day) < 20) or (month == '12' and int(day) > 21):
-        return data.get_constellation()['12']['name']
-    elif month == '01':
-        return data.get_constellation()['01']['name']
-    elif month == '12':
-        return data.get_constellation()['12']['name']
+    start_date = data.get_constellation()[month]['start_date']
+    start_day = int(start_date.split('-')[-1])
+    
+    if day < start_day:
+        tmp_month = 12 if month - 1 == 0 else month - 1
 
-    start_date = func.str_to_time(year + '-' + data.get_constellation()[month]['start_date'])
-    end_date = func.str_to_time(year + '-' + data.get_constellation()[month]['end_date'])
-    if (start_date <= time) and (end_date >= time):
+        return data.get_constellation()[tmp_month]['name']
+    else:
         return data.get_constellation()[month]['name']
-
-    key = int(month) - 1
-    key = func.get_str_pad(key) if key < 10 else str(key)
-    start_date = func.str_to_time(year + '-' + data.get_constellation()[key]['start_date'])
-    end_date = func.str_to_time(year + '-' + data.get_constellation()[key]['end_date'])
-    if (start_date <= time) and (end_date >= time):
-        return data.get_constellation()[key]['name']
-
-    return ''
-
 
 def get_chinese_zodiac(birthday_code):
     """

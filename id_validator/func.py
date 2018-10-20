@@ -25,28 +25,6 @@ def get_str_pad(string, length=2, character='0', right=False):
             string = character * frequency + string
         return string
 
-
-def is_set(variable):
-    """
-    变量是否定义
-    :param variable:
-    :return:
-    """
-    return variable in locals() or variable in globals()
-
-
-def str_to_time(string, format_string="%Y-%m-%d"):
-    """
-    将字符串格式转换为日期格式
-    :param string:
-    :param format_string:
-    :return:
-    """
-    import time
-    str_time = time.strptime(string, format_string)
-    return int(time.mktime(str_time))
-
-
 def check_year(year):
     """
     检测年份
