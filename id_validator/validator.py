@@ -3,7 +3,6 @@
 
 from . import utils
 from . import helper
-from . import data
 
 
 @utils.check_for_none
@@ -54,7 +53,7 @@ def get_info(id_card):
     address_info = helper.get_address_info(code['address_code'])
     info = dict()
     info['address_code'] = code['address_code']
-    info['abandoned'] = 1 if data.get_abandoned_address_code().get(code['address_code'], 0) else 0
+    info['abandoned'] = helper.check_abandoned(code['address_code'])
     info['address'] = address_info['province'] + address_info['city'] + address_info['district']
     info['birthday_code'] = code['birthday_code'][0:4] + '-' + code['birthday_code'][4:6] + '-' + code['birthday_code'][
                                                                                                   6:8]

@@ -169,6 +169,15 @@ def check_order_code(order_code):
     return True
 
 
+def check_abandoned(address_code):
+    """
+    检测地址码是否废弃
+    :param address_code:
+    :return:
+    """
+    return 1 if data.get_abandoned_address_code().get(address_code, 0) else 0
+
+
 def get_id_argument(id_card):
     """
     获取身份证号码信息
@@ -288,6 +297,3 @@ def get_random_address_code(pattern):
         if re.match(pattern, key):
             result.append(key)
     return result[random.choice(range(len(result)))]
-
-
-
