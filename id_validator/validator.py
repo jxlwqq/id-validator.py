@@ -16,7 +16,7 @@ def is_valid(id_card):
     """
     id_card = str(id_card)
     code = helper.get_id_argument(id_card)
-    if not helper.check_address_code(code['address_code']):
+    if not helper.check_address_code(code['address_code'], code['birthday_code']):
         return False
 
     if not helper.check_birthday_code(code['birthday_code']):
@@ -50,7 +50,7 @@ def get_info(id_card):
         return False
 
     code = helper.get_id_argument(id_card)
-    address_info = helper.get_address_info(code['address_code'])
+    address_info = helper.get_address_info(code['address_code'], code['birthday_code'])
     info = dict()
     info['address_code'] = code['address_code']
     info['abandoned'] = helper.check_abandoned(code['address_code'])

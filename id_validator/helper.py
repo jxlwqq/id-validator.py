@@ -115,13 +115,14 @@ def generator_check_bit(body):
     return str(check_bit)
 
 
-def check_address_code(address_code):
+def check_address_code(address_code, birthday_code):
     """
     检测地址码
     :param address_code:
+    :param birthday_code:
     :return:
     """
-    address_info = get_address_info(address_code)
+    address_info = get_address_info(address_code, birthday_code)
     if address_info['province'] == '':
         return False
     return True
@@ -175,7 +176,7 @@ def check_abandoned(address_code):
     :param address_code:
     :return:
     """
-    return 1 if data.get_abandoned_address_code().get(address_code, 0) else 0
+    return 0 if data.get_address_code().get(address_code, 0) else 1
 
 
 def get_id_argument(id_card):
@@ -207,10 +208,11 @@ def get_id_argument(id_card):
     return code
 
 
-def get_address_info(address_code):
+def get_address_info(address_code, birthday_code):
     """
     获取地址信息
     :param address_code:
+    :param birthday_code:
     :return:
     """
     address_info = {}
@@ -219,25 +221,32 @@ def get_address_info(address_code):
     province_address_code = address_code[0:2] + '0000'
     city_address_code = address_code[0:4] + '00'
 
-    address_code_dist = data.get_address_code()
-    abandoned_address_code_dist = data.get_abandoned_address_code()
-    address_info['province'] = address_code_dist.get(province_address_code, '')
-
-    if address_info['province'] == '':
-        address_info['province'] = abandoned_address_code_dist.get(province_address_code, '')
+    address_info['province'] = get_address(province_address_code, birthday_code)
 
     if first_character != '8':
-        address_info['city'] = address_code_dist.get(city_address_code, '')
-        if address_info['city'] == '':
-            address_info['city'] = abandoned_address_code_dist.get(city_address_code, '')
-        address_info['district'] = address_code_dist.get(address_code, '')
-        if address_info['district'] == '':
-            address_info['district'] = abandoned_address_code_dist.get(address_code, '')
+        address_info['city'] = get_address(city_address_code, birthday_code)
+        address_info['district'] = get_address(address_code, birthday_code)
     else:
         address_info['city'] = ''
         address_info['district'] = ''
 
     return address_info
+
+
+def get_address(address_code, birthday_code):
+    address_code_dist = data.get_address_code()
+    address = address_code_dist.get(address_code, '')
+    if address == '':
+        address_code_timeline = data.get_address_code_timeline()
+        timeline = address_code_timeline.get(address_code, '')
+        if timeline != '':
+            year = int(birthday_code[0:4])
+            for val in timeline:
+                start_year = 0 if val['start_year'] == '' else int(val['start_year'])
+                if year >= start_year:
+                    address = val['address']
+
+    return address
 
 
 def get_constellation(birthday_code):
@@ -251,13 +260,14 @@ def get_constellation(birthday_code):
 
     start_date = data.get_constellation()[month]['start_date']
     start_day = int(start_date.split('-')[-1])
-    
+
     if day < start_day:
         tmp_month = 12 if month - 1 == 0 else month - 1
 
         return data.get_constellation()[tmp_month]['name']
     else:
         return data.get_constellation()[month]['name']
+
 
 def get_chinese_zodiac(birthday_code):
     """
