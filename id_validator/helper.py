@@ -58,7 +58,7 @@ def generator_birthday_code(birthday=None):
         day = func.get_str_pad(birthday[6:8], 2)
 
     if not func.check_year(year):
-        year = '19' + str(random.randint(50, 100))
+        year = '19' + str(random.randint(50, 99))
 
     if not func.check_month(month):
         month = func.get_str_pad(random.randint(1, 12))
@@ -67,7 +67,7 @@ def generator_birthday_code(birthday=None):
         day = func.get_str_pad(random.randint(1, 28))
 
     if not check_birthday_code(year + month + day):
-        year = '19' + str(random.randint(50, 100))
+        year = '19' + str(random.randint(50, 99))
         month = func.get_str_pad(random.randint(1, 12))
         day = func.get_str_pad(random.randint(1, 28))
 
