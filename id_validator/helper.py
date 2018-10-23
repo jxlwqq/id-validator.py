@@ -234,13 +234,15 @@ def get_address_info(address_code, birthday_code):
 
 
 def get_address(address_code, birthday_code):
-    address_code_dist = data.get_address_code()
-    address = address_code_dist.get(address_code, '')
-    if address == '':
-        address_code_timeline = data.get_address_code_timeline()
-        timeline = address_code_timeline.get(address_code, '')
-        if timeline != '':
-            year = int(birthday_code[0:4])
+    address = ''
+    address_code_timeline = data.get_address_code_timeline()
+    timeline = address_code_timeline.get(address_code, '')
+    if timeline != '':
+        year = int(birthday_code[0:4])
+        first_start_year = 0 if timeline[0]['start_year'] == '' else int(timeline[0]['start_year'])
+        if year < first_start_year:
+            address = timeline[0]['address']
+        else:
             for val in timeline:
                 start_year = 0 if val['start_year'] == '' else int(val['start_year'])
                 if year >= start_year:
