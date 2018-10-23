@@ -80,7 +80,7 @@ def generator_order_code(sex=None):
     :param sex:
     :return:
     """
-    order_code = random.randint(101, 1000)
+    order_code = random.randint(101, 999)
     if sex == 1:
         order_code = order_code - 1 if order_code % 2 == 0 else order_code
     if sex == 0:
