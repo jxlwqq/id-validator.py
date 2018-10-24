@@ -3,6 +3,7 @@
 
 -  `PHP 版本 <https://github.com/jxlwqq/id-validator>`__
 -  `Ruby 版本 <https://github.com/renyijiu/id_validator>`__
+-  `JavaScript 版本 <https://github.com/mc-zone/IDValidator>`__
 
 
 .. image:: https://travis-ci.org/jxlwqq/id-validator.py.svg?branch=master
