@@ -265,10 +265,9 @@ def get_constellation(birthday_code):
 
     if day < start_day:
         tmp_month = 12 if month - 1 == 0 else month - 1
-
         return data.get_constellation()[tmp_month]['name']
-    else:
-        return data.get_constellation()[month]['name']
+
+    return data.get_constellation()[month]['name']
 
 
 def get_chinese_zodiac(birthday_code):
