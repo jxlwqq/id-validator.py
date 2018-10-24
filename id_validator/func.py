@@ -25,6 +25,7 @@ def get_str_pad(string, length=2, character='0', right=False):
             string = character * frequency + string
         return string
 
+
 def check_year(year):
     """
     检测年份
