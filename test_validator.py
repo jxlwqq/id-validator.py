@@ -12,7 +12,13 @@ class ValidatorTest(unittest.TestCase):
         self.assertTrue(validator.is_valid('610104620927690'))
         self.assertTrue(validator.is_valid('810000199408230021'))
         self.assertTrue(validator.is_valid('830000199201300022'))
-        self.assertFalse(validator.is_valid('440308199901101513'))
+        self.assertTrue(validator.is_valid('500154199301135886'))
+
+        self.assertFalse(validator.is_valid('440308199901101513'))  # 验证码不合法
+        self.assertFalse(validator.is_valid('44030819990110'))  # 号码位数不合法
+        self.assertFalse(validator.is_valid('111111199901101512'))  # 地址码不合法
+        self.assertFalse(validator.is_valid('440308199902301512'))  # 出生日期码不合法
+        self.assertFalse(validator.is_valid('610104620932690'))  # 出生日期码不合法
 
     def test_get_info(self):
         self.assertEqual(validator.get_info('440308199901101512'), {
@@ -25,6 +31,42 @@ class ValidatorTest(unittest.TestCase):
             'sex': 1,
             'length': 18,
             'check_bit': '2'
+        })
+
+        self.assertEqual(validator.get_info('362324198001010014'), {
+            'address_code': '362324',
+            'abandoned': 1,
+            'address': '江西省宜春地区丰城县',
+            'birthday_code': '1980-01-01',
+            'constellation': '摩羯座',
+            'chinese_zodiac': '申猴',
+            'sex': 1,
+            'length': 18,
+            'check_bit': '4'
+        })
+
+        self.assertEqual(validator.get_info('362324198101010011'), {
+            'address_code': '362324',
+            'abandoned': 1,
+            'address': '江西省宜春地区丰城县',
+            'birthday_code': '1981-01-01',
+            'constellation': '摩羯座',
+            'chinese_zodiac': '酉鸡',
+            'sex': 1,
+            'length': 18,
+            'check_bit': '1'
+        })
+
+        self.assertEqual(validator.get_info('362324198201010019'), {
+            'address_code': '362324',
+            'abandoned': 1,
+            'address': '江西省上饶地区铅山县',
+            'birthday_code': '1982-01-01',
+            'constellation': '摩羯座',
+            'chinese_zodiac': '戌狗',
+            'sex': 1,
+            'length': 18,
+            'check_bit': '9',
         })
 
     def test_fake_id(self):
