@@ -247,6 +247,8 @@ def get_address(address_code, birthday_code):
             start_year = 0 if val['start_year'] == '' else int(val['start_year'])
             if (key == 0 and year < start_year) or year >= start_year:
                 address = val['address']
+            else:
+                break
 
     return address
 
