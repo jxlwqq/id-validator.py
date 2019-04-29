@@ -4,6 +4,8 @@
 from . import utils
 from . import helper
 
+from datetime import date
+
 
 @utils.check_for_none
 @utils.check_empty_string
@@ -35,6 +37,18 @@ def is_valid(id_card):
     return True
 
 
+def calculate_age(born):
+    today = date.today()
+    try:
+        birthday = born.replace(year=today.year)
+    except ValueError: # raised when birth date is February 29 and the current year is not a leap year
+        birthday = born.replace(year=today.year, month=born.month+1, day=1)
+    if birthday > today:
+        return today.year - born.year - 1
+    else:
+        return today.year - born.year
+
+
 @utils.check_for_none
 @utils.check_empty_string
 @utils.check_id_card_length
@@ -56,8 +70,8 @@ def get_info(id_card):
     info['abandoned'] = helper.check_abandoned(code['address_code'])
     info['address'] = address_info['province'] + address_info['city'] + address_info['district']
     info['address_tree'] = [address_info['province'], address_info['city'], address_info['district']]
-    info['birthday_code'] = code['birthday_code'][0:4] + '-' + code['birthday_code'][4:6] + '-' + code['birthday_code'][
-                                                                                                  6:8]
+    info['birthday_code'] = code['birthday_code'][0:4] + '-' + code['birthday_code'][4:6] + '-' + code['birthday_code'][6:8]
+    info['age'] = calculate_age(date(int(code['birthday_code'][0:4]), int(code['birthday_code'][4:6]), int(code['birthday_code'][6:8])))
     info['constellation'] = helper.get_constellation(code['birthday_code'])
     info['chinese_zodiac'] = helper.get_chinese_zodiac(code['birthday_code'])
     info['sex'] = 0 if int(code['order_code']) % 2 == 0 else 1
