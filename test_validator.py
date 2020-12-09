@@ -4,6 +4,7 @@
 
 import unittest
 from id_validator import validator
+from datetime import datetime
 
 
 class ValidatorTest(unittest.TestCase):
@@ -26,6 +27,7 @@ class ValidatorTest(unittest.TestCase):
             'abandoned': 0,
             'address': '广东省深圳市盐田区',
             'address_tree': ['广东省', '深圳市', '盐田区'],
+            'age': datetime.now().year - int('440308199901101512'[6:10]),
             'birthday_code': '1999-01-10',
             'constellation': '摩羯座',
             'chinese_zodiac': '卯兔',
@@ -39,6 +41,7 @@ class ValidatorTest(unittest.TestCase):
             'abandoned': 1,
             'address': '江西省宜春地区丰城县',
             'address_tree': ['江西省', '宜春地区', '丰城县'],
+            'age': datetime.now().year - int('362324198001010014'[6:10]),
             'birthday_code': '1980-01-01',
             'constellation': '摩羯座',
             'chinese_zodiac': '申猴',
@@ -52,6 +55,7 @@ class ValidatorTest(unittest.TestCase):
             'abandoned': 1,
             'address': '江西省宜春地区丰城县',
             'address_tree': ['江西省', '宜春地区', '丰城县'],
+            'age': datetime.now().year - int('362324198101010011'[6:10]),
             'birthday_code': '1981-01-01',
             'constellation': '摩羯座',
             'chinese_zodiac': '酉鸡',
@@ -65,6 +69,7 @@ class ValidatorTest(unittest.TestCase):
             'abandoned': 1,
             'address': '江西省上饶地区铅山县',
             'address_tree': ['江西省', '上饶地区', '铅山县'],
+            'age': datetime.now().year - int('362324198201010019'[6:10]),
             'birthday_code': '1982-01-01',
             'constellation': '摩羯座',
             'chinese_zodiac': '戌狗',
