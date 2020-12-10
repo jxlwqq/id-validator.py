@@ -3,6 +3,7 @@
 
 from . import utils
 from . import helper
+from datetime import datetime
 
 
 @utils.check_for_none
@@ -56,6 +57,7 @@ def get_info(id_card):
     info['abandoned'] = helper.check_abandoned(code['address_code'])
     info['address'] = address_info['province'] + address_info['city'] + address_info['district']
     info['address_tree'] = [address_info['province'], address_info['city'], address_info['district']]
+    info['age'] = datetime.now().year - int(code['birthday_code'][0:4])
     info['birthday_code'] = code['birthday_code'][0:4] + '-' + code['birthday_code'][4:6] + '-' + code['birthday_code'][
                                                                                                   6:8]
     info['constellation'] = helper.get_constellation(code['birthday_code'])
