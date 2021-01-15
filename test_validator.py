@@ -13,8 +13,8 @@ class ValidatorTest(unittest.TestCase):
         self.assertTrue(validator.is_valid('610104620927690'))
         self.assertTrue(validator.is_valid('810000199408230021'))
         self.assertTrue(validator.is_valid('830000199201300022'))
-        self.assertTrue(validator.is_valid('500154199301135886'))
-
+        self.assertFalse(validator.is_valid('500154199301135886'))
+        self.assertTrue(validator.is_valid('500154199804106120'))
         self.assertFalse(validator.is_valid('440308199901101513'))  # 验证码不合法
         self.assertFalse(validator.is_valid('44030819990110'))  # 号码位数不合法
         self.assertFalse(validator.is_valid('111111199901101512'))  # 地址码不合法

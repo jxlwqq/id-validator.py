@@ -244,8 +244,9 @@ def get_address(address_code, birthday_code):
     if timeline != '':
         year = int(birthday_code[0:4])
         for key, val in enumerate(timeline):
-            start_year = 0 if val['start_year'] == '' else int(val['start_year'])
-            if (key == 0 and year < start_year) or year >= start_year:
+            start_year = 0 if val['start_year'] == '' else val['start_year']
+            end_year = 9999 if val['end_year'] == '' else val['end_year']
+            if end_year >= year >= start_year:
                 address = val['address']
 
     return address
