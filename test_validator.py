@@ -78,6 +78,20 @@ class ValidatorTest(unittest.TestCase):
             'check_bit': '9',
         })
 
+        self.assertEqual(validator.get_info('430302199312194239'), {
+            'address_code': '430302',
+            'abandoned': 0,
+            'address': '湖南省湘潭市雨湖区',
+            'address_tree': ['湖南省', '湘潭市', '雨湖区'],
+            'age': datetime.now().year - int('430302199312194239'[6:10]),
+            'birthday_code': '1993-12-19',
+            'constellation': '射手座',
+            'chinese_zodiac': '酉鸡',
+            'sex': 1,
+            'length': 18,
+            'check_bit': '9',
+        })
+
     def test_fake_id(self):
         self.assertTrue(validator.is_valid(validator.fake_id()))
         self.assertTrue(validator.is_valid(validator.fake_id(False)))
