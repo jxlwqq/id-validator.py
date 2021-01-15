@@ -93,7 +93,9 @@ class ValidatorTest(unittest.TestCase):
         })
 
     def test_fake_id(self):
-        self.assertTrue(validator.is_valid(validator.fake_id()))
+        for i in range(100):
+            self.assertTrue(validator.is_valid(validator.fake_id()))
+
         self.assertTrue(validator.is_valid(validator.fake_id(False)))
         self.assertTrue(validator.is_valid(validator.fake_id(True, '上海市', '2000', 1)))
         self.assertTrue(validator.is_valid(validator.fake_id(True, '江苏省', '20000101', 1)))

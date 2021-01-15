@@ -3,6 +3,8 @@
 
 from . import utils
 from . import helper
+from . import data
+import random
 from datetime import datetime
 
 
@@ -78,8 +80,11 @@ def fake_id(eighteen=True, address=None, birthday=None, sex=None):
     :param sex:
     :return:
     """
-    address_code = helper.generator_address_code(address)
-    birthday_code = helper.generator_birthday_code(birthday)
+    if address is None:
+        address_code, address = random.choice(list(data.get_address_code().items()))
+    else:
+        address_code = helper.generator_address_code(address)
+    birthday_code = helper.generator_birthday_code(address_code, address, birthday)
     order_code = helper.generator_order_code(sex)
 
     if not eighteen:

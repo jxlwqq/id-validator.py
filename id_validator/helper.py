@@ -42,7 +42,7 @@ def generator_address_code(address=None):
     return address_code
 
 
-def generator_birthday_code(birthday=None):
+def generator_birthday_code(address_code, address, birthday=None):
     """
     生成出生日期码
     :param birthday:
@@ -51,6 +51,8 @@ def generator_birthday_code(birthday=None):
     year = ''
     month = ''
     day = ''
+    start_year = 0
+    end_year = 9999
 
     if birthday is not None:
         year = func.get_str_pad(birthday[0:4], 4)
@@ -60,6 +62,20 @@ def generator_birthday_code(birthday=None):
     if not func.check_year(year):
         year = '19' + str(random.randint(50, 99))
 
+    address_code_timeline = data.get_address_code_timeline()
+    timeline = address_code_timeline.get(address_code, '')
+    if timeline != '':
+        for key, val in enumerate(timeline):
+            if val['address'] == address:
+                start_year = start_year if val['start_year'] == '' else val['start_year']
+                end_year = end_year if val['end_year'] == '' else val['end_year']
+
+    if year < str(start_year):
+        year = str(start_year)
+
+    if year > str(end_year):
+        year = str(end_year)
+
     if not func.check_month(month):
         month = func.get_str_pad(random.randint(1, 12))
 
@@ -67,7 +83,7 @@ def generator_birthday_code(birthday=None):
         day = func.get_str_pad(random.randint(1, 28))
 
     if not check_birthday_code(year + month + day):
-        year = '19' + str(random.randint(50, 99))
+        year = str(random.randint(max(1950, start_year), min(end_year, datetime.datetime.now().year) - 1))
         month = func.get_str_pad(random.randint(1, 12))
         day = func.get_str_pad(random.randint(1, 28))
 
