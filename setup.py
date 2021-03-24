@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='id-validator',
-      version='1.0.14',
+      version='1.0.15',
       description='Chinese Mainland Personal ID Card Validation',
       url='https://github.com/jxlwqq/id-validator.py',
       author='jxlwqq',
