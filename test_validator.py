@@ -13,7 +13,10 @@ class ValidatorTest(unittest.TestCase):
         self.assertTrue(validator.is_valid('610104620927690'))
         self.assertTrue(validator.is_valid('810000199408230021'))
         self.assertTrue(validator.is_valid('830000199201300022'))
-        self.assertFalse(validator.is_valid('500154199301135886'))
+        self.assertFalse(validator.is_valid('500154199301135886', True))  # 出生日期在地址码发布之前，严格模式
+        self.assertTrue(validator.is_valid('500154199301135886'))  # 出生日期在地址码发布之前，非严格模式
+        self.assertTrue(validator.is_valid('411082198901010002'))  # 出生日期在地址码发布之前，非严格模式
+        self.assertFalse(validator.is_valid('411082198901010002', True))  # 出生日期在地址码发布之前，非严格模式
         self.assertTrue(validator.is_valid('500154199804106120'))
         self.assertFalse(validator.is_valid('440308199901101513'))  # 验证码不合法
         self.assertFalse(validator.is_valid('44030819990110'))  # 号码位数不合法
@@ -90,6 +93,20 @@ class ValidatorTest(unittest.TestCase):
             'sex': 1,
             'length': 18,
             'check_bit': '9',
+        })
+
+        self.assertEqual(validator.get_info('411082198901010002'), {
+            'address_code': '411082',
+            'abandoned': 0,
+            'address': '河南省许昌市长葛市',
+            'address_tree': ['河南省', '许昌市', '长葛市'],
+            'age': datetime.now().year - int('411082198901010002'[6:10]),
+            'birthday_code': '1989-01-01',
+            'constellation': '摩羯座',
+            'chinese_zodiac': '巳蛇',
+            'sex': 0,
+            'length': 18,
+            'check_bit': '2',
         })
 
     def test_fake_id(self):

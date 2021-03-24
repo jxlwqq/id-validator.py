@@ -11,15 +11,16 @@ from datetime import datetime
 @utils.check_for_none
 @utils.check_empty_string
 @utils.check_id_card_length
-def is_valid(id_card):
+def is_valid(id_card, strict_mode=False):
     """
     检测身份证合法性
     :param id_card:
+    :param strict_mode
     :return:
     """
     id_card = str(id_card)
     code = helper.get_id_argument(id_card)
-    if not helper.check_address_code(code['address_code'], code['birthday_code']):
+    if not helper.check_address_code(code['address_code'], code['birthday_code'], strict_mode):
         return False
 
     if not helper.check_birthday_code(code['birthday_code']):
@@ -41,19 +42,20 @@ def is_valid(id_card):
 @utils.check_for_none
 @utils.check_empty_string
 @utils.check_id_card_length
-def get_info(id_card):
+def get_info(id_card, strict_mode=False):
     """
     获取身份证信息
     :param id_card:
+    :param strict_mode:
     :return:
     """
     id_card = str(id_card)
 
-    if not is_valid(id_card):
+    if not is_valid(id_card, strict_mode):
         return False
 
     code = helper.get_id_argument(id_card)
-    address_info = helper.get_address_info(code['address_code'], code['birthday_code'])
+    address_info = helper.get_address_info(code['address_code'], code['birthday_code'], strict_mode)
     info = dict()
     info['address_code'] = code['address_code']
     info['abandoned'] = helper.check_abandoned(code['address_code'])

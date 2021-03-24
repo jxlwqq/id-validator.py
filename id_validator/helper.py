@@ -129,15 +129,17 @@ def generator_check_bit(body):
     return str(check_bit)
 
 
-def check_address_code(address_code, birthday_code):
+def check_address_code(address_code, birthday_code, strict_mode=False):
     """
     检测地址码
     :param address_code:
     :param birthday_code:
+    :param strict_mode:
     :return:
     """
-    address_info = get_address_info(address_code, birthday_code)
-    if address_info['province'] == '':
+    address_info = get_address_info(address_code, birthday_code, strict_mode)
+    if address_code[0:1] == '8' and address_info['province'] == '' \
+            or address_code[0:1] != '8' and address_info['district'] == '':
         return False
     return True
 
@@ -222,11 +224,12 @@ def get_id_argument(id_card):
     return code
 
 
-def get_address_info(address_code, birthday_code):
+def get_address_info(address_code, birthday_code, strict_mode=False):
     """
     获取地址信息
     :param address_code:
     :param birthday_code:
+    :param strict_mode:
     :return:
     """
     address_info = {}
@@ -235,11 +238,11 @@ def get_address_info(address_code, birthday_code):
     province_address_code = address_code[0:2] + '0000'
     city_address_code = address_code[0:4] + '00'
 
-    address_info['province'] = get_address(province_address_code, birthday_code)
+    address_info['province'] = get_address(province_address_code, birthday_code, strict_mode)
 
     if first_character != '8':
-        address_info['city'] = get_address(city_address_code, birthday_code)
-        address_info['district'] = get_address(address_code, birthday_code)
+        address_info['city'] = get_address(city_address_code, birthday_code, strict_mode)
+        address_info['district'] = get_address(address_code, birthday_code, strict_mode)
     else:
         address_info['city'] = ''
         address_info['district'] = ''
@@ -247,11 +250,12 @@ def get_address_info(address_code, birthday_code):
     return address_info
 
 
-def get_address(address_code, birthday_code):
+def get_address(address_code, birthday_code, strict_mode=False):
     """
     通过地址码与出生日期码获取地址信息
     :param address_code:
     :param birthday_code:
+    :param strict_mode:
     :return:
     """
     address = ''
@@ -264,6 +268,13 @@ def get_address(address_code, birthday_code):
             end_year = 9999 if val['end_year'] == '' else val['end_year']
             if end_year >= year >= start_year:
                 address = val['address']
+
+        if address == '' and strict_mode is False:
+            for key, val in enumerate(timeline):
+                end_year = 9999 if val['end_year'] == '' else val['end_year']
+                if year <= end_year:
+                    address = val['address']
+                    break
 
     return address
 
