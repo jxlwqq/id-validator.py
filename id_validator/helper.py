@@ -138,8 +138,8 @@ def check_address_code(address_code, birthday_code, strict_mode=False):
     :return:
     """
     address_info = get_address_info(address_code, birthday_code, strict_mode)
-    if address_code[0:1] == '8' and address_info['province'] == '' \
-            or address_code[0:1] != '8' and address_info['district'] == '':
+    if (address_code[0:1] == '8' and address_info['province'] == '') or \
+            (address_code[0:1] != '8' and (address_info['district'] == '' or address_info['province'] == '')):
         return False
     return True
 
@@ -275,6 +275,16 @@ def get_address(address_code, birthday_code, strict_mode=False):
                 if year <= end_year:
                     address = val['address']
                     break
+    else:
+        # 修复 \d\d\d\d01 和 \d\d\d\d20 的历史遗留问题
+        # 以上两种地址码，现实身份证真实存在，但民政部历年公布的官方地址码中却均没有查询到
+        # 所以这里需要特殊处理
+        # 1980年、1982年版本中，未有制定省辖市市辖区的代码，所有带县的省辖市给予“××××20”的“市区”代码。
+        # 1984年版本开始对地级市（前称省辖市）市辖区制定代码，其中“××××01”表示市辖区的汇总码，同时撤销“××××20”的“市区”代码（追溯至1983年）
+        if address_code[4:6] == '01':
+            address = '市辖区'
+        if address_code[4:6] == '20':
+            address = '市区'
 
     return address
 

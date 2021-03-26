@@ -23,6 +23,8 @@ class ValidatorTest(unittest.TestCase):
         self.assertFalse(validator.is_valid('111111199901101512'))  # 地址码不合法
         self.assertFalse(validator.is_valid('440308199902301512'))  # 出生日期码不合法
         self.assertFalse(validator.is_valid('610104620932690'))  # 出生日期码不合法
+        self.assertTrue(validator.is_valid('44040119580101000X'))  # 历史遗留数据：珠海市市辖区
+        self.assertTrue(validator.is_valid('140120197901010008'))  # 历史遗留数据：太原市市区
 
     def test_get_info(self):
         self.assertEqual(validator.get_info('440308199901101512'), {
@@ -108,6 +110,36 @@ class ValidatorTest(unittest.TestCase):
             'length': 18,
             'check_bit': '2',
         })
+
+        self.assertEqual(validator.get_info('44040119580101000X'), {
+            'address_code': '440401',
+            'abandoned': 1,
+            'address': '广东省珠海市市辖区',
+            'address_tree': ['广东省', '珠海市', '市辖区'],
+            'age': datetime.now().year - int('44040119580101000X'[6:10]),
+            'birthday_code': '1958-01-01',
+            'constellation': '摩羯座',
+            'chinese_zodiac': '戌狗',
+            'sex': 0,
+            'length': 18,
+            'check_bit': 'X',
+        })
+
+        self.assertEqual(validator.get_info('140120197901010008'), {
+            'address_code': '140120',
+            'abandoned': 1,
+            'address': '山西省太原市市区',
+            'address_tree': ['山西省', '太原市', '市区'],
+            'age': datetime.now().year - int('140120197901010008'[6:10]),
+            'birthday_code': '1979-01-01',
+            'constellation': '摩羯座',
+            'chinese_zodiac': '未羊',
+            'sex': 0,
+            'length': 18,
+            'check_bit': '8',
+        })
+
+
 
     def test_fake_id(self):
         for i in range(100):
