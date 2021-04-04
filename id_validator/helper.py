@@ -271,10 +271,8 @@ def get_address(address_code, birthday_code, strict_mode=False):
 
         if address == '' and strict_mode is False:
             for key, val in enumerate(timeline):
-                end_year = 9999 if val['end_year'] == '' else val['end_year']
-                if year <= end_year:
-                    address = val['address']
-                    break
+                address = val['address']
+                break
     else:
         # 修复 \d\d\d\d01、\d\d\d\d02、\d\d\d\d11 和 \d\d\d\d20 的历史遗留问题
         # 以上四种地址码，现实身份证真实存在，但民政部历年公布的官方地址码中可能没有查询到
