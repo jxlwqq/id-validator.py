@@ -64,6 +64,9 @@ def generator_birthday_code(address_code, address, birthday=None):
 
     address_code_timeline = data.get_address_code_timeline()
     timeline = address_code_timeline.get(address_code, '')
+    if timeline == '':
+        additional_address_code_timeline = data.get_additional_address_code_timeline()
+        timeline = additional_address_code_timeline.get(address_code, '')
     if timeline != '':
         for key, val in enumerate(timeline):
             if val['address'] == address:
@@ -261,6 +264,9 @@ def get_address(address_code, birthday_code, strict_mode=False):
     address = ''
     address_code_timeline = data.get_address_code_timeline()
     timeline = address_code_timeline.get(address_code, '')
+    if timeline == '':
+        additional_address_code_timeline = data.get_additional_address_code_timeline()
+        timeline = additional_address_code_timeline.get(address_code, '')
     if timeline != '':
         year = int(birthday_code[0:4])
         for key, val in enumerate(timeline):
