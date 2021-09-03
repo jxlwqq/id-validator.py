@@ -7,9 +7,8 @@
 -  `JavaScript 版本 <https://github.com/mc-zone/IDValidator>`__
 
 
-.. image:: https://travis-ci.org/jxlwqq/id-validator.py.svg?branch=master
-    :target: https://travis-ci.org/jxlwqq/id-validator.py
-
+.. image:: https://github.com/jxlwqq/id-validator.py/actions/workflows/testing.yml/badge.svg
+    :target: https://github.com/jxlwqq/id-validator.py/actions/workflows/testing.yml
 
 安装
 ----
